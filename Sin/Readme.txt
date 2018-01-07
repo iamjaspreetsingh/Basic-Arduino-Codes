@@ -1,0 +1,1 @@
+sin function implemented using 5 LEDs.

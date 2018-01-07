@@ -32,6 +32,8 @@ void showled(byte num)
     { 
       showled(val);
       val <<= 1;
+      int x=5*sin(100*j);
+      Serial.println(x);
       delay(100);
     }
     for (int j = 0; j < 5; j++)
