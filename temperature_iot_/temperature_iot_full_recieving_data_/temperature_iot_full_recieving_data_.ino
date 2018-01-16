@@ -6,15 +6,16 @@ SoftwareSerial esp(2, 3); // 2 as Rx 3 as Tx
 #define IP "184.106.153.149" // thing speak ip address: 184.106.153.149
 
 // GET /update?key=[THINGSPEAK_KEY]&field1=[data 1]&field2=[data 2]...;
-String GET = "GET /channels/402786/fields/1.json?api_key=SK4AD2L8YEO9P9LU&results=1";
+String GET = "GET /channels/402782/fields/1.json?api_key=SK4AD2L8YEO9P9LU&results=1";
 //channels/402786/fields/1.json?api_key=U6N8EJUE95O21GG5&results=2
 
 void setup() {
-
+  
   pinMode(A0, INPUT);
+  pinMode(12, OUTPUT);
   esp.begin( baudrate );
   Serial.begin( baudrate );
-check:
+  check:
   sendSerial("AT");
   delay(5000);
   if (esp.find("OK"))
@@ -26,18 +27,14 @@ check:
   {
     goto check;
   }
-
 }
 
 void loop()
 {
 start:
-  int ch1 = 750; // (analogRead(A0)*0.4)-273;
-  Serial.println(ch1);
-  if (ch1 <= 0)goto start; //invalid value
-  String temp = String(ch1); // turn data into string
-
-  updatevalues(temp);
+ 
+ 
+  updatevalues("100");
 
 }
 //----- update the  Thingspeak string
@@ -84,17 +81,6 @@ void sendSerial(String cmd)
   Serial.println(cmd);
   esp.println(cmd);
   
-  if(esp.available())
-  {
-    if(esp.findUntil("field1",'\n'))
-    {
-      if(esp.findUntil("field1",'\n'))
-      {
-        Serial.println(Serial.parseInt());
-      }
-    }
-  }
- 
 }
 
 boolean connectWiFi()
@@ -120,7 +106,6 @@ boolean connectWiFi()
     Serial.println("RECEIVED: Error");
     return false;
   }
-
   cmd = "AT+CIPMUX=0";// mutiplexing off
   sendSerial( cmd );
   if ( esp.find( "Error") )

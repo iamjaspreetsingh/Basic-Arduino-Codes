@@ -31,12 +31,12 @@ void setup() {
 
 void loop() {
   start:
-  int ch1 = analogRead(A0)*0.4;
-  Serial.println(ch1);
-  if(ch1<=0)goto start;//invalid value
-  String temp =String(ch1);// turn data into string
+  //int ch1 = analogRead(A0)*0.4;
+ // Serial.println(ch1);
+  //if(ch1<=0)goto start;//invalid value
+  //String temp =String(ch1);// turn data into string
   
-  updatevalues(temp);
+  updatevalues("100");
 
 }
 //----- update the  Thingspeak string 
