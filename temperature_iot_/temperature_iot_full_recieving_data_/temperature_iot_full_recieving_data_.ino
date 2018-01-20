@@ -7,10 +7,9 @@ SoftwareSerial esp(2, 3); // 2 as Rx 3 as Tx
 
 // GET /update?key=[THINGSPEAK_KEY]&field1=[data 1]&field2=[data 2]...;
 String GET = "GET /channels/402782/fields/1.json?api_key=SK4AD2L8YEO9P9LU&results=1";
-//channels/402786/fields/1.json?api_key=U6N8EJUE95O21GG5&results=2
+// channels/402786/fields/1.json?api_key=U6N8EJUE95O21GG5&results=2
 
 void setup() {
-  
   pinMode(A0, INPUT);
   pinMode(12, OUTPUT);
   esp.begin( baudrate );
@@ -32,10 +31,7 @@ void setup() {
 void loop()
 {
 start:
- 
- 
-  updatevalues("100");
-
+ updatevalues("100");
 }
 //----- update the  Thingspeak string
 void updatevalues( String T)
@@ -60,6 +56,9 @@ void updatevalues( String T)
     Serial.print(">");
     Serial.print(cmd);
     esp.print(cmd);
+    if(esp.available())
+    Serial.println(Serial.parseInt());
+
   }
   else
   {
@@ -80,8 +79,7 @@ void sendSerial(String cmd)
   Serial.print("SEND: ");
   Serial.println(cmd);
   esp.println(cmd);
-  
-}
+  }
 
 boolean connectWiFi()
 {
@@ -114,4 +112,3 @@ boolean connectWiFi()
     return false;
   }
 }
-
