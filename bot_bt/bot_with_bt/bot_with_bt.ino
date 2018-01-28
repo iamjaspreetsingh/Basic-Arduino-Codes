@@ -1,4 +1,4 @@
-int in1=10,in2=4,in11=11,in22=5;
+int in1=6,in2=4,in11=7,in22=5;
 #include<SoftwareSerial.h>
 SoftwareSerial bt(2,3);
 int w1;
@@ -17,6 +17,7 @@ pinMode(2,INPUT);
 
 void loop() {
   // put your main code here, to run repeatedly:
+forward();
   if(Serial.available())
  { 
   char w=bt.read();
@@ -44,6 +45,7 @@ stopp();
 
 
 }}
+
 void forward()
 {
   digitalWrite(in1,HIGH);
