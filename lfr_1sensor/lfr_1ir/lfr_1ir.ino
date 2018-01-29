@@ -1,4 +1,4 @@
-int in1=10,in2=4,in11=11,in22=5,i=3;
+int in1=2,in2=3,in11=6,in22=7,i=10;
 unsigned int premilli=0;
 int w1;
 void setup() {
@@ -91,6 +91,4 @@ digitalWrite(in2,LOW);
 digitalWrite(in22,LOW);
 digitalWrite(in11,LOW);
 }
-
-
 
