@@ -1,4 +1,4 @@
-int in1=2,in2=3,in11=6,in22=7,i=10;
+int in1=2,in2=3,in11=6,in22=7,i=8;
 unsigned int premilli=0;
 int w1;
 void setup() {
@@ -13,8 +13,9 @@ pinMode(i,INPUT);
 int z;
 void loop() {
   z=digitalRead(i);
-  
-
+ 
+  Serial.print(z);
+}/*
 
 if(z==1){
   
@@ -91,4 +92,4 @@ digitalWrite(in2,LOW);
 digitalWrite(in22,LOW);
 digitalWrite(in11,LOW);
 }
-
+*/
