@@ -84,6 +84,7 @@ digitalWrite(rm1,LOW);
 void sright()
 {
 
+Serial.println("rig");
   digitalWrite(lm1,HIGH);
 digitalWrite(lm2,LOW);
 digitalWrite(rm1,LOW);
@@ -92,6 +93,7 @@ digitalWrite(rm2,LOW);
 
 void sleft()
 {
+Serial.println("lef");
 
   digitalWrite(lm1,LOW);
 digitalWrite(lm2,LOW);
@@ -190,28 +192,33 @@ void readSensors()
  Serial.print(r3);
  
 //00__11
-if(((l1==0)||(l2==0))&&(r3==1)&&(r2==1))
+if(((l1==0)&&(l2==0))&&(r3==1)&&(r2==1))
 {left();
 delay(100);
-}//10__11
-else if(((l1==1)||(l2==0))&&(r3==1)&&(r2==1))
-sleft();
-
-//11__01
-else if(((r3==0)||(r2==0))&&(l2==1)&&(l1==1))
-sright();
-
+}
 //110011
 else if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 forward();
+
+//10__11
+else if(((l1==1)&&(l2==0))&&(r3==1)&&(r2==1))
+sleft();
+
+//01__11
+else if(((l1==0)&&(l2==1))&&(r3==1)&&(r2==1))
+sleft();
+
+//11__01
+else if(((r3==1)&&(r2==0))&&(l2==1)&&(l1==1))
+sright();
+//11__10
+else if(((r3==0)&&(r2==1))&&(l2==1)&&(l1==1))
+sright();
 //11__00
-else if(((r3==0)||(r2==0))&&(l2==1)&&(l1==1))
+else if(((r3==0)&&(r2==0))&&(l2==1)&&(l1==1))
 {right();
 delay(100);}
-//else if(l2==0)
-//sleft();
-//else if(r2==0)
-//sright();
+
 else stopp();
   
 }
