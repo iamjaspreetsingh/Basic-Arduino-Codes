@@ -25,7 +25,7 @@ int l1,l2,l3,r1,r2,r3;
 #define led 5
 
 char path[30] = {};
-int pathLength;
+int pathlength=0;
 int readLength;
 
 void setup()
@@ -57,6 +57,9 @@ void loop()
 //analogWrite(5,200);
 //analogWrite(6,200);
 
+Serial.println("Path : ");
+for(int i=0;i<pathlength;i++)
+Serial.print(path[i]);
 }
 
 
@@ -189,7 +192,9 @@ void readSensors()
 if(((l1==0)&&(l2==0))&&(r3==1)&&(r2==1))
 {
   left();
-  delay(150);
+  delay(250);
+  path[pathlength]='L';
+  pathlength++;
 }
 
 //110011
@@ -214,9 +219,36 @@ sright();
 else if(((r3==0)&&(r2==0))&&(l2==1)&&(l1==1))
 {
   right();
-  delay(150);
+  delay(350);
+path[pathlength]='R';
+  pathlength++;
 
 }
+//10__00
+else if(((r3==0)&&(r2==0))&&(l2==0)&&(l1==1))
+{
+  right();
+  delay(350);
+path[pathlength]='R';
+  pathlength++;
+
+}
+//000011
+else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==1&&r3==1)
+{  left();
+  delay(350);
+  path[pathlength]='L';
+  pathlength++;
+}
+
+/*
+else if(l1==1&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
+{  left();
+  delay(1000);
+  path[pathlength]='U';
+  pathlength++;
+}
+*/
 
 else stopp();
   
