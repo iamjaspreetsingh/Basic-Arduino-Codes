@@ -14,7 +14,7 @@
 
 
 int l1,l2,l3,r1,r2,r3;
-
+unsigned int premilli=0;
 
 #define lm1  2   //Speed
 #define lm2  3   //Direction
@@ -55,7 +55,7 @@ void loop()
 {  
  readSensors();                                                                                      
 //analogWrite(5,200);
-//analogWrite(6,200);
+analogWrite(6,240);
 
 Serial.println("Path : ");
 for(int i=0;i<pathlength;i++)
@@ -188,17 +188,9 @@ void readSensors()
  Serial.print(" ");
  Serial.print(r3);
  
-//00__11
-if(((l1==0)&&(l2==0))&&(r3==1)&&(r2==1))
-{
-  left();
-  delay(250);
-  path[pathlength]='L';
-  pathlength++;
-}
 
 //110011
-else if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
+if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 forward();
 
 //10__11
@@ -215,40 +207,97 @@ sright();
 //11__10
 else if(((r3==0)&&(r2==1))&&(l2==1)&&(l1==1))
 sright();
-//11__00
-else if(((r3==0)&&(r2==0))&&(l2==1)&&(l1==1))
+//110000
+else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==0)&&(r1==0))
 {
+   int a=millis()-premilli;
+  if(a>1000)
+  {
+ forward();
+delay(200);
   right();
-  delay(350);
+  delay(450);
 path[pathlength]='R';
   pathlength++;
+premilli=0;}
 
 }
-//10__00
-else if(((r3==0)&&(r2==0))&&(l2==0)&&(l1==1))
-{
+//100000
+else if(((r3==0)&&(r2==0))&&(l2==0)&&(l1==1)&&(l3==0)&&(r1==0))
+{ int a=millis()-premilli;
+  if(a>1000)
+  {
+ forward();
+  delay(200);
   right();
-  delay(350);
+  delay(450);
 path[pathlength]='R';
   pathlength++;
+premilli=0;}
 
+}
+
+//111100
+else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==0&&r3==0)
+{ int a=millis()-premilli;
+  if(a>1000)
+  {
+ 
+  
+  forward();
+  delay(200); 
+  right();
+  delay(450);
+  path[pathlength]='R';
+  pathlength++;
+
+premilli=0;}
 }
 //000011
 else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==1&&r3==1)
-{  left();
-  delay(350);
+{  int a=millis()-premilli;
+  if(a>1000)
+  {
+ forward(); 
+  delay(200);
+  left();
+  delay(450);
   path[pathlength]='L';
   pathlength++;
+premilli=0;}
+
+}
+//000001
+else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==1)
+{ int a=millis()-premilli;
+  if(a>1000)
+  {
+  forward();
+  delay(200); 
+  left();
+  delay(450);
+  path[pathlength]='L';
+  pathlength++;
+premilli=0;}
+
 }
 
-/*
-else if(l1==1&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
-{  left();
-  delay(1000);
-  path[pathlength]='U';
+//001111
+else if(l1==0&&l2==0&&l3==1&&r1==1&&r2==1&&r3==1)
+{ int a=millis()-premilli;
+  if(a>1000)
+  {
+  forward();
+  delay(200); 
+  left();
+  delay(450);
+  path[pathlength]='L';
   pathlength++;
+premilli=0;}
+
 }
-*/
+
+
 
 else stopp();
   
