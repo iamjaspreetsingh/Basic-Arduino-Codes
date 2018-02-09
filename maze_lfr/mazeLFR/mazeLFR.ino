@@ -48,14 +48,21 @@ void setup()
   pinMode(rm2, OUTPUT);
   pinMode(led, OUTPUT);
   Serial.begin(9600);
+                      
+ 
+   //left();
+  //delay(1420);
+ //stopp();
+  
+  
   }
 
 
 void loop()
-{  
- readSensors();                                                                                      
-//analogWrite(5,200);
-analogWrite(6,240);
+{                                                                                    
+analogWrite(5,170);
+analogWrite(6,150);
+ readSensors();    
 
 Serial.println("Path : ");
 for(int i=0;i<pathlength;i++)
@@ -236,6 +243,21 @@ path[pathlength]='R';
 premilli=0;}
 
 }
+//111000
+else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==0))
+{
+   int a=millis()-premilli;
+  if(a>1000)
+  {
+ forward();
+delay(200);
+  right();
+  delay(450);
+path[pathlength]='R';
+  pathlength++;
+premilli=0;}
+
+}
 
 //111100
 else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==0&&r3==0)
@@ -297,7 +319,52 @@ premilli=0;}
 
 }
 
+//000111
+else if(l1==0&&l2==0&&l3==0&&r1==1&&r2==1&&r3==1)
+{ int a=millis()-premilli;
+  if(a>1000)
+  {
+  forward();
+  delay(200); 
+  left();
+  delay(450);
+  path[pathlength]='L';
+  pathlength++;
+premilli=0;}
 
+}
+
+//000000
+else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
+{ int a=millis()-premilli;
+  if(a>1000)
+  {
+  forward();
+  delay(200); 
+  left();
+  delay(450);
+  path[pathlength]='L';
+  pathlength++;
+premilli=0;}
+
+}
+
+//111111
+/*else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==1&&r3==1)
+{ 
+  int a=millis()-premilli;
+  if(a>1000&&pathlength!=0)
+  {
+  left();
+  delay(1420);
+  stopp();
+  delay(500);
+  path[pathlength]='U';
+  pathlength++;
+  premilli=0;}
+
+}
+*/
 
 else stopp();
   

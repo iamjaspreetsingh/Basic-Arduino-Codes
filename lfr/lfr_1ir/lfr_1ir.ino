@@ -14,9 +14,7 @@ int z;
 void loop() {
   z=digitalRead(i);
  
-  Serial.print(z);
-}/*
-
+ 
 if(z==1){
   
   while(z==1)
