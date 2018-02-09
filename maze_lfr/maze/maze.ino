@@ -53,6 +53,8 @@ void setup()
    //left();
   //delay(1420);
  //stopp();
+analogWrite(5,170);
+analogWrite(6,150);
   
   
   }
@@ -170,9 +172,7 @@ digitalWrite(rm1,LOW);
 
 
 
-
-
-void readSensors()
+void readsense()
 {
   l1  = digitalRead(ls1);
   l2    = digitalRead(ls2);
@@ -181,6 +181,11 @@ void readSensors()
   r2  = digitalRead(rs2);
   r3   = digitalRead(rs3);  
 
+}
+
+void readSensors()
+{
+  readsense();
 // serial printing below for debugging purposes
 
  Serial.print(l1);
@@ -196,84 +201,25 @@ void readSensors()
  Serial.print(r3);
  
 
-//110011
+//11(0/0)11
 if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 forward();
 
-//10__11
-else if(((l1==1)&&(l2==0))&&(r3==1)&&(r2==1))
-sleft();
-
-//01__11
-else if(((l1==0)&&(l2==1))&&(r3==1)&&(r2==1))
-sleft();
-
-//11__01
-else if(((r3==1)&&(r2==0))&&(l2==1)&&(l1==1))
-sright();
-//11__10
-else if(((r3==0)&&(r2==1))&&(l2==1)&&(l1==1))
-sright();
-//110000
-else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==0)&&(r1==0))
-{
-   int a=millis()-premilli;
-  if(a>1000)
-  {
- forward();
-delay(200);
-  right();
-  delay(450);
-path[pathlength]='R';
-  pathlength++;
-premilli=0;}
-
-}
-//100000
-else if(((r3==0)&&(r2==0))&&(l2==0)&&(l1==1)&&(l3==0)&&(r1==0))
-{ int a=millis()-premilli;
-  if(a>1000)
-  {
- forward();
-  delay(200);
-  right();
-  delay(450);
-path[pathlength]='R';
-  pathlength++;
-premilli=0;}
-
-}
-//111000
-else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==0))
-{
-   int a=millis()-premilli;
-  if(a>1000)
-  {
- forward();
-delay(200);
-  right();
-  delay(450);
-path[pathlength]='R';
-  pathlength++;
-premilli=0;}
-
-}
-
-//111100
-else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==0&&r3==0)
-{ int a=millis()-premilli;
-  if(a>1000)
-  {
- 
+//000000
+else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
+{ 
   
+  int a=millis()-premilli;
+  if(a>1000)
+  {
   forward();
   delay(200); 
-  right();
+  left();
   delay(450);
-  path[pathlength]='R';
+  path[pathlength]='L';
   pathlength++;
-
 premilli=0;}
+
 }
 //000011
 else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==1&&r3==1)
@@ -334,20 +280,111 @@ premilli=0;}
 
 }
 
-//000000
-else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
-{ int a=millis()-premilli;
+//110000
+else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==0)&&(r1==0))
+{ move1ft();
+readsense();
+if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
+{
+  move1ft();
+  
+}
+else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+{  bck1ft();
+   int a=millis()-premilli;
   if(a>1000)
   {
-  forward();
-  delay(200); 
-  left();
+ forward();
+delay(200);
+  right();
   delay(450);
-  path[pathlength]='L';
+path[pathlength]='R';
+  pathlength++;
+premilli=0;}
+}
+}
+//100000
+else if(((r3==0)&&(r2==0))&&(l2==0)&&(l1==1)&&(l3==0)&&(r1==0))
+{ move1ft();
+readsense();
+if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
+{
+  move1ft();
+  
+}
+else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+{  bck1ft();
+  
+  int a=millis()-premilli;
+  if(a>1000)
+  {
+ forward();
+  delay(200);
+  right();
+  delay(450);
+path[pathlength]='R';
   pathlength++;
 premilli=0;}
 
+}}
+//111000
+else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==0))
+{move1ft();
+readsense();
+if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
+{
+  move1ft();
+  
 }
+else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+{  bck1ft();
+  
+   int a=millis()-premilli;
+  if(a>1000)
+  {
+ forward();
+delay(200);
+  right();
+  delay(450);
+path[pathlength]='R';
+  pathlength++;
+premilli=0;}
+
+}}
+
+//111100
+else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==0&&r3==0)
+{ move1ft();
+readsense();
+if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
+{
+  move1ft();
+  
+}
+else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+{  bck1ft();
+  int a=millis()-premilli;
+  if(a>1000)
+  {
+ 
+  
+  forward();
+  delay(200); 
+  right();
+  delay(450);
+  path[pathlength]='R';
+  pathlength++;
+
+premilli=0;}
+}
+}
+//10__11
+else if(((l1==1)&&(l2==0))&&(r3==1)&&(r2==1))
+sleft();
+
+//11__01
+else if(((r3==1)&&(r2==0))&&(l2==1)&&(l1==1))
+sright();
 
 //111111
 /*else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==1&&r3==1)
@@ -367,6 +404,20 @@ premilli=0;}
 */
 
 else stopp();
+  
+}
+
+void move1ft()
+{
+  forward();
+  delay(1000);
+  
+}
+
+void bck1ft()
+{
+  back();
+  delay(1000);
   
 }
 
