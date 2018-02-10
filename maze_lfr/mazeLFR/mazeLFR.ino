@@ -53,8 +53,6 @@ void setup()
    //left();
   //delay(1420);
  //stopp();
-analogWrite(5,170);
-analogWrite(6,150);
   
   
   }
@@ -63,12 +61,16 @@ analogWrite(6,150);
 void loop()
 {                                                                                    
 analogWrite(5,170);
-analogWrite(6,150);
+analogWrite(6,165);
+ 
+ //forward();
+ 
  readSensors();    
 
 Serial.println("Path : ");
 for(int i=0;i<pathlength;i++)
 Serial.print(path[i]);
+
 }
 
 
@@ -186,19 +188,6 @@ void readsense()
 void readSensors()
 {
   readsense();
-// serial printing below for debugging purposes
-
- Serial.print(l1);
- Serial.print(" ");
- Serial.print(l2);
- Serial.print(" ");
- Serial.print(l3);
- Serial.print(" ");
- Serial.print(r1);
- Serial.print(" ");
- Serial.print(r2);
- Serial.print(" ");
- Serial.print(r3);
  
 
 //11(0/0)11
@@ -207,78 +196,102 @@ forward();
 
 //000000
 else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
-{ 
-  
-  int a=millis()-premilli;
-  if(a>1000)
-  {
-  forward();
-  delay(200); 
-  left();
-  delay(450);
-  path[pathlength]='L';
-  pathlength++;
-premilli=0;}
+{ move1ft();
+  readsense();
+if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
+stopp();
+else
+{do{
+  back();
+  readsense();}while(l3==0||r1==0);
 
+  
+  sleft();
+  delay(200);
+  int a=millis()-premilli;
+  do{
+  left();
+  readsense();
+  }while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1)); 
+   
+ path[pathlength]='L';
+  pathlength++;
+}
 }
 //000011
 else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==1&&r3==1)
 {  int a=millis()-premilli;
-  if(a>1000)
-  {
  forward(); 
-  delay(200);
+  delay(100);
+  do{
   left();
-  delay(450);
-  path[pathlength]='L';
-  pathlength++;
-premilli=0;}
-
+  
+  readsense();
+  }while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1));
+   
 }
 //000001
 else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==1)
 { int a=millis()-premilli;
-  if(a>1000)
-  {
   forward();
-  delay(200); 
+  delay(100); 
+  do{
   left();
-  delay(450);
-  path[pathlength]='L';
-  pathlength++;
-premilli=0;}
-
+  
+  readsense();
+  }while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1));
+   
+   
 }
 
 //001111
 else if(l1==0&&l2==0&&l3==1&&r1==1&&r2==1&&r3==1)
 { int a=millis()-premilli;
-  if(a>1000)
-  {
-  forward();
-  delay(200); 
+  do{
   left();
-  delay(450);
-  path[pathlength]='L';
-  pathlength++;
-premilli=0;}
-
+  
+  readsense();
+  }while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1));
+  
 }
 
 //000111
 else if(l1==0&&l2==0&&l3==0&&r1==1&&r2==1&&r3==1)
 { int a=millis()-premilli;
-  if(a>1000)
-  {
-  forward();
-  delay(200); 
+  do{ 
   left();
-  delay(450);
-  path[pathlength]='L';
+  readsense();
+  }while(!(l1==1&&l2==1&&(l3==0||r1==0)&&r2==1&&r3==1));
+  
+  
+}
+
+//111000
+else if((r1==0)&&(r2==0)&&(r3==0)&&(l1==1)&&(l2==1)&&(l3==1))
+{move1ft();
+readsense();
+if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
+{
+  
+  move1ft();
+  
+ path[pathlength]='S';
   pathlength++;
-premilli=0;}
 
 }
+else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+{  bck1ft();
+  
+ path[pathlength]='R';
+  pathlength++;
+
+   int a=millis()-premilli;
+do{
+  right();
+
+  readsense();
+  }while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1));
+}}
 
 //110000
 else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==0)&&(r1==0))
@@ -288,19 +301,18 @@ if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 {
   move1ft();
   
-}
-else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
-{  bck1ft();
-   int a=millis()-premilli;
-  if(a>1000)
-  {
- forward();
-delay(200);
-  right();
-  delay(450);
-path[pathlength]='R';
+ path[pathlength]='S';
   pathlength++;
-premilli=0;}
+
+}
+else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+{  bck1ft();
+
+ path[pathlength]='R';
+  pathlength++;
+
+   int a=millis()-premilli;
+ 
 }
 }
 //100000
@@ -310,48 +322,20 @@ readsense();
 if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 {
   move1ft();
-  
+ 
+ path[pathlength]='S';
+  pathlength++;
+ 
 }
-else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
 {  bck1ft();
-  
+ 
+ path[pathlength]='R';
+  pathlength++;
+ 
   int a=millis()-premilli;
-  if(a>1000)
-  {
- forward();
-  delay(200);
-  right();
-  delay(450);
-path[pathlength]='R';
-  pathlength++;
-premilli=0;}
-
+ 
 }}
-//111000
-else if((r3==0)&&(r2==0)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==0))
-{move1ft();
-readsense();
-if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
-{
-  move1ft();
-  
-}
-else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
-{  bck1ft();
-  
-   int a=millis()-premilli;
-  if(a>1000)
-  {
- forward();
-delay(200);
-  right();
-  delay(450);
-path[pathlength]='R';
-  pathlength++;
-premilli=0;}
-
-}}
-
 //111100
 else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==0&&r3==0)
 { move1ft();
@@ -360,24 +344,23 @@ if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 {
   move1ft();
   
+ path[pathlength]='S';
+  pathlength++;
 }
-else if((r3==1)&&(r2==1))&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
+else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
 {  bck1ft();
   int a=millis()-premilli;
-  if(a>1000)
-  {
- 
   
-  forward();
-  delay(200); 
-  right();
-  delay(450);
-  path[pathlength]='R';
+  
+ path[pathlength]='R';
   pathlength++;
+ }
+}
 
-premilli=0;}
-}
-}
+//01__11
+else if(((l1==0)&&(l2==0))&&(r3==1)&&(r2==1))
+sleft();
+
 //10__11
 else if(((l1==1)&&(l2==0))&&(r3==1)&&(r2==1))
 sleft();
@@ -386,22 +369,29 @@ sleft();
 else if(((r3==1)&&(r2==0))&&(l2==1)&&(l1==1))
 sright();
 
+//11__10
+else if(((r3==0)&&(r2==1))&&(l2==1)&&(l1==1))
+sright();
+
 //111111
-/*else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==1&&r3==1)
+else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==1&&r3==1)
 { 
   int a=millis()-premilli;
-  if(a>1000&&pathlength!=0)
-  {
+  
+    do{
   left();
-  delay(1420);
-  stopp();
-  delay(500);
+  readsense();}
+while((!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1)));
+ 
   path[pathlength]='U';
   pathlength++;
-  premilli=0;}
+  premilli=0;
 
-}
-*/
+  
+  }
+
+
+
 
 else stopp();
   
@@ -410,14 +400,22 @@ else stopp();
 void move1ft()
 {
   forward();
-  delay(1000);
-  
-}
+  delay(300);}
 
 void bck1ft()
-{
+{do{
   back();
-  delay(1000);
-  
+  readsense();
+}while(!(r2==0||r3==0));
+
+do{
+right();
+  readsense();
+}while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1));
+ 
 }
+
+
+
+
 
