@@ -30,155 +30,31 @@ int pathlength=0;
 int readLength;
 int replaystage=0;
 
-void setup()
-{  
-  pinMode(ls1, INPUT);
-  pinMode(ls2, INPUT);
-  pinMode(ls3, INPUT);
-  pinMode(rs1, INPUT);
-  pinMode(rs2, INPUT);
-  pinMode(rs3, INPUT);
 
-  
-  pinMode(A5, INPUT_PULLUP);
-
-  pinMode(lmen, OUTPUT);
-  pinMode(rmen, OUTPUT);
-  
-    
-  pinMode(lm1, OUTPUT);
-  pinMode(lm2, OUTPUT);
-  pinMode(rm1, OUTPUT);
-  pinMode(rm2, OUTPUT);
-  Serial.begin(9600);
-                      
- 
-   //left();
-  //delay(1420);
- //stopp();
-  
+void shorten()
+{
+  for(int i=1;i<pathlength-1;i++)
+  {
+    if(path[i]=='U'&&path[i-1]=='L')
+    {
+      path[i-1]='S';
+      for(int j=i;j<pathlength;j++)
+      path[j]=path[j+1];
+      pathlength--;  
+      
+    }
+    else 
+    if(path[i]=='U'&&path[i-1]=='S')
+    {
+      path[i-1]='R';
+      for(int j=i;j<pathlength;j++)
+      path[j]=path[j+1];
+      pathlength--;  
+      
+    }
   
   }
-
-
-void loop()
-{                                                                                    
-analogWrite(5,160);
-analogWrite(6,156);
- 
- 
-if(!(digitalRead(A5)))
-{replaystage=1;
-//shorten();
-Serial.println("REPLAYYYYYYYYY : ");
-
 }
- readSensors();    
-
-Serial.println("Path : ");
-for(int i=0;i<pathlength;i++)
-Serial.print(path[i]);
-
-
-
-}
-
-
-
-
-
-void forward()
-{
-Serial.println("forr");
- digitalWrite(lm1,HIGH);
-digitalWrite(lm2,LOW);
-digitalWrite(rm1,HIGH);
-digitalWrite(rm2,LOW);
-}
-
-void back()
-{
-
-  digitalWrite(lm2,HIGH);
-digitalWrite(lm1,LOW);
-digitalWrite(rm2,HIGH);
-digitalWrite(rm1,LOW);
-}
-
-void sright()
-{
-
-Serial.println("rig");
-  digitalWrite(lm1,HIGH);
-digitalWrite(lm2,LOW);
-digitalWrite(rm1,LOW);
-digitalWrite(rm2,LOW);
-}
-
-void sleft()
-{
-Serial.println("lef");
-digitalWrite(lm1,LOW);
-digitalWrite(lm2,LOW);
-digitalWrite(rm1,HIGH);
-digitalWrite(rm2,LOW);
-}
-
-
-
-
-
-
-
-
-
-void left()
-{
-Serial.println("lefttttt");
-digitalWrite(lm1,LOW);
-digitalWrite(lm2,HIGH);
-digitalWrite(rm1,HIGH);
-digitalWrite(rm2,LOW);
-}
-
-void right()
-{
-Serial.println("rttttttttttt");
-
-
-digitalWrite(lm1,HIGH);
-digitalWrite(lm2,LOW);
-digitalWrite(rm1,LOW);
-digitalWrite(rm2,HIGH);
-
-}
-void stopp()
-{
-Serial.println("stop");
-
-digitalWrite(lm1,LOW);
-digitalWrite(lm2,LOW);
-digitalWrite(rm2,LOW);
-digitalWrite(rm1,LOW);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -198,8 +74,7 @@ Serial.print(l3);
 Serial.print(r1);
 Serial.print(r2);
 Serial.print(r3);
-Serial.println("a");}
-
+}
 void readSensors()
 {
   readsense();
@@ -447,7 +322,8 @@ sright();
 void checkstopp()
 {
   Serial.println('checkstopp');
-  
+  forward();
+  delay(200);
   readsense();
 if((l1==0)&&(l2==0)&&(l3==0)&&(r1==0)&&(r2==0)&&(r3==0))
 stopp();
@@ -470,10 +346,12 @@ else
 
 void checkstrtforleft()
 {
-  
+  Serial.println("leleleleleleleeeeeeeeeeeeeeeee");
+  sleft();
+  delay(200);
   int a=millis()-premilli;
   do{
-  sleft();
+  left();
   readsense();
   }while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1)); 
    
@@ -483,33 +361,160 @@ void checkstrtforleft()
 }
 
 
-
-
-
-
-void shorten()
+void forward()
 {
-  for(int i=1;i<pathlength-1;i++)
-  {
-    if(path[i]=='U'&&path[i-1]=='L')
-    {
-      path[i-1]='S';
-      for(int j=i;j<pathlength;j++)
-      path[j]=path[j+1];
-      pathlength--;  
-      
-    }
-    else 
-    if(path[i]=='U'&&path[i-1]=='S')
-    {
-      path[i-1]='R';
-      for(int j=i;j<pathlength;j++)
-      path[j]=path[j+1];
-      pathlength--;  
-      
-    }
+Serial.println("forr");
+ digitalWrite(lm1,HIGH);
+digitalWrite(lm2,LOW);
+digitalWrite(rm1,HIGH);
+digitalWrite(rm2,LOW);
+}
+
+void back()
+{
+
+  digitalWrite(lm2,HIGH);
+digitalWrite(lm1,LOW);
+digitalWrite(rm2,HIGH);
+digitalWrite(rm1,LOW);
+}
+
+void sright()
+{
+
+Serial.println("rig");
+  digitalWrite(lm1,HIGH);
+digitalWrite(lm2,LOW);
+digitalWrite(rm1,LOW);
+digitalWrite(rm2,LOW);
+}
+
+void sleft()
+{
+Serial.println("lef");
+digitalWrite(lm1,LOW);
+digitalWrite(lm2,LOW);
+digitalWrite(rm1,HIGH);
+digitalWrite(rm2,LOW);
+}
+
+
+
+
+
+
+
+
+
+void left()
+{
+Serial.println("lefttttt");
+digitalWrite(lm1,LOW);
+digitalWrite(lm2,HIGH);
+digitalWrite(rm1,HIGH);
+digitalWrite(rm2,LOW);
+}
+
+void right()
+{
+Serial.println("rttttttttttt");
+
+
+digitalWrite(lm1,HIGH);
+digitalWrite(lm2,LOW);
+digitalWrite(rm1,LOW);
+digitalWrite(rm2,HIGH);
+
+}
+void stopp()
+{
+Serial.println("stop");
+
+digitalWrite(lm1,LOW);
+digitalWrite(lm2,LOW);
+digitalWrite(rm2,LOW);
+digitalWrite(rm1,LOW);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void setup()
+{  
+  pinMode(ls1, INPUT);
+  pinMode(ls2, INPUT);
+  pinMode(ls3, INPUT);
+  pinMode(rs1, INPUT);
+  pinMode(rs2, INPUT);
+  pinMode(rs3, INPUT);
+
+  
+  pinMode(A5, INPUT_PULLUP);
+
+  pinMode(lmen, OUTPUT);
+  pinMode(rmen, OUTPUT);
+  
+    
+  pinMode(lm1, OUTPUT);
+  pinMode(lm2, OUTPUT);
+  pinMode(rm1, OUTPUT);
+  pinMode(rm2, OUTPUT);
+  Serial.begin(9600);
+                      
+ 
+   //left();
+  //delay(1420);
+ //stopp();
+  
   
   }
+
+
+void loop()
+{                                                                                    
+analogWrite(5,130);
+analogWrite(6,126);
+ 
+ 
+if(!(digitalRead(A5)))
+{replaystage=1;
+shorten();
+Serial.println("REPLAYYYYYYYYY : ");
+
 }
+ readSensors();    
+//forward();
+Serial.println("Path : ");
+for(int i=0;i<pathlength;i++)
+Serial.print(path[i]);
+
+
+
+}
+
+
+
 
 
