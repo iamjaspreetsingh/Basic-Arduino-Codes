@@ -493,15 +493,20 @@ void setup()
    //left();
   //delay(1420);
  //stopp();
+  pinMode(A5, OUTPUT);
+                                                                    
+analogWrite(5,160);
+analogWrite(6,156);
+
+  digitalWrite(A5,HIGH);
+  delay(500);
   
-  
+  digitalWrite(A5,LOW);
   }
 
 
 void loop()
-{                                                                                    
-analogWrite(5,130);
-analogWrite(6,126);
+{                  
  
  
 if(!(digitalRead(A5)))
