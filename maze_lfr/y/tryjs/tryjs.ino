@@ -202,25 +202,6 @@ void shorten()
 
 */
 
-void move1ft()
-{
-  forward();
-  delay(200);}
-
-void bck1ft()
-{do{
-  back();
-  readsense();
-
-}while(!(r2==0||r3==0));
-
-
-delay(2);
-  
-checkstrtforright();
- 
-}
-
 
 
 void readsense()
@@ -247,10 +228,10 @@ void readSensors()
 //000000
  if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
 { 
-// checking for the stop 
+
 Serial.println('checkstopp');
   forward();
-  delay(180);
+  delay(120);
   readsense();
 if(!((l1==0)&&(l2==0)&&(l3==0)&&(r1==0)&&(r2==0)&&(r3==0)))
 {checkstrtforleft();
@@ -404,10 +385,29 @@ while((!((l3==0||r1==0)&&(l1==1)&&(r3==1))));
 
 
 
-}
 else stopp();
 
 }
+
+void move1ft()
+{
+  forward();
+  delay(200);}
+
+void bck1ft()
+{do{
+  back();
+  readsense();
+
+}while(!(r2==0||r3==0));
+
+
+delay(2);
+  
+checkstrtforright();
+ 
+}
+
 
 
 
@@ -435,16 +435,25 @@ void setup()
   pinMode(rm1, OUTPUT);
   pinMode(rm2, OUTPUT);
   Serial.begin(9600);
-                 
-analogWrite(5,190);//speed
-analogWrite(6,186);//speed
+                      
+ 
+   //left();
+  //delay(1420);
+ //stopp();
+  
   
   }
 
 
 void loop()
 {                                                                                    
+analogWrite(5,170);
+analogWrite(6,166);
+ 
+
  readSensors();    
+//forward();
+
 
 }
 
