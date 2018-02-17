@@ -436,8 +436,8 @@ void setup()
   pinMode(rm2, OUTPUT);
   Serial.begin(9600);
                  
-analogWrite(5,190);//speed
-analogWrite(6,186);//speed
+analogWrite(5,185);//speed
+analogWrite(6,181);//speed
   
   }
 

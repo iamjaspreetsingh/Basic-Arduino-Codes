@@ -25,36 +25,6 @@ unsigned int premilli=0;
 #define rm2 7   
 
 
-char path[30] = {};
-int pathlength=0;
-int readLength;
-int replaystage=0;
-
-
-void shorten()
-{
-  for(int i=1;i<pathlength-1;i++)
-  {
-    if(path[i]=='U'&&path[i-1]=='L')
-    {
-      path[i-1]='S';
-      for(int j=i;j<pathlength;j++)
-      path[j]=path[j+1];
-      pathlength--;  
-      
-    }
-    else 
-    if(path[i]=='U'&&path[i-1]=='S')
-    {
-      path[i-1]='R';
-      for(int j=i;j<pathlength;j++)
-      path[j]=path[j+1];
-      pathlength--;  
-      
-    }
-  
-  }
-}
 
 
 
@@ -87,26 +57,7 @@ forward();
 //000000
 else if(l1==0&&l2==0&&l3==0&&r1==0&&r2==0&&r3==0)
 { 
-  if(replaystage==0)
   checkstopp();
-
-  else
-  {
-    if(path[j]=='L')
-    {
-      checkstrtforleft();
-    }
-    else if(path[j]=='S')
-    {
-      forward();
-      delay(300);
-    }
-    else if(path[j]=='R')
-    {
-      checkstrtforright();
-    }
-  j++;
-  }
 
   
 }
@@ -163,15 +114,11 @@ if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
   
   move1ft();
   
- path[pathlength]='S';
-  pathlength++;
 
 }
 else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
 {  bck1ft();
   
- path[pathlength]='R';
-  pathlength++;
 
    int a=millis()-premilli;
 do{
@@ -189,17 +136,11 @@ if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 {
   move1ft();
   
- path[pathlength]='S';
-  pathlength++;
 
 }
 else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
 {  bck1ft();
 
- path[pathlength]='R';
-  pathlength++;
-
-   int a=millis()-premilli;
  
 }
 }
@@ -211,15 +152,11 @@ if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 {
   move1ft();
  
- path[pathlength]='S';
-  pathlength++;
  
 }
 else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
 {  bck1ft();
  
- path[pathlength]='R';
-  pathlength++;
  
   int a=millis()-premilli;
  
@@ -232,16 +169,12 @@ if(((l3==0)||(r1==0  ))&&(l2==1)&&(l1==1)&&(r3==1)&&(r2==1))
 {
   move1ft();
   
- path[pathlength]='S';
-  pathlength++;
 }
 else if((r3==1)&&(r2==1)&&(l2==1)&&(l1==1)&&(l3==1)&&(r1==1))
 {  bck1ft();
   int a=millis()-premilli;
   
   
- path[pathlength]='R';
-  pathlength++;
  }
 }
 
@@ -264,7 +197,6 @@ sright();
 //111111
 else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==1&&r3==1)
 { int chh=0;
-  int a=millis()-premilli;
   
     do{
   left();
@@ -280,10 +212,7 @@ else if(l1==1&&l2==1&&l3==1&&r1==1&&r2==1&&r3==1)
   }
 while((!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1)));
  
-  path[pathlength]='U';
-  pathlength++;
-  premilli=0;
-
+ 
   
   }
 
@@ -297,7 +226,7 @@ else stopp();
 void move1ft()
 {
   forward();
-  delay(100);}
+  delay(110);}
 
 void bck1ft()
 {do{
@@ -327,7 +256,7 @@ void checkstopp()
 {
   Serial.println('checkstopp');
   forward();
-  delay(90);
+  delay(140);
   readsense();
 if(((l2==0)&&(l3==0)&&(r1==0)&&(r2==0)))
 {stopp();
@@ -335,7 +264,7 @@ delay(10000);
 
 }else
 {back();
-  delay(200);
+  delay(100);
   
   do{
   back();
@@ -355,14 +284,11 @@ void checkstrtforleft()
   Serial.println("lefttttttttttttttttttttttttttttattata");
   sleft();
   delay(200);
-  int a=millis()-premilli;
   do{
   sleft();
   readsense();
   }while(!((l3==0||r1==0)&&l1==1&&l2==1&&r2==1&&r3==1)); 
    
-  path[pathlength]='L';
-  pathlength++;
 
 }
 
@@ -493,33 +419,19 @@ void setup()
    //left();
   //delay(1420);
  //stopp();
-  pinMode(A5, OUTPUT);
                                                                     
 analogWrite(5,160);
 analogWrite(6,156);
 
-  digitalWrite(A5,HIGH);
-  delay(500);
-  
-  digitalWrite(A5,LOW);
   }
 
-
+  
 void loop()
 {                  
  
  
-if(!(digitalRead(A5)))
-{replaystage=1;
-shorten();
-Serial.println("REPLAYYYYYYYYY : ");
-
-}
  readSensors();    
 //forward();
-Serial.println("Path : ");
-for(int i=0;i<pathlength;i++)
-Serial.print(path[i]);
 
 
 
