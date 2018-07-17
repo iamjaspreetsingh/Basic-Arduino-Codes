@@ -1,9 +1,8 @@
-
 #include<SoftwareSerial.h>
 #define baudrate 115200
 SoftwareSerial esp(2,3);// 2 as Rx 3 as Tx
-#define SSID "Google"
-#define PASS "11111111"
+#define SSID "A106"
+#define PASS "bvcoe@999"
 #define IP "184.106.153.149" // thing speak ip address: 184.106.153.149
 
 // GET /update?key=[THINGSPEAK_KEY]&field1=[data 1]&field2=[data 2]...;
@@ -36,7 +35,7 @@ void loop() {
   //if(ch1<=0)goto start;//invalid value
   //String temp =String(ch1);// turn data into string
   
-  updatevalues("100");
+  updatevalues("8");
 
 }
 //----- update the  Thingspeak string 
